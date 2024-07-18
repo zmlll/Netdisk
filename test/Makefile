@@ -1,8 +1,7 @@
-SRCS:=$(wildcard *.c)
-OBJS:=$(SRCS:%.c=%.o)
-test:$(OBJS)
-	gcc $^ -o $@ -lpthread
-%.o:%.c
-	gcc -c $^ -o $@ -g
+srcs:=$(wildcard *.c)
+exes:=$(srcs:%.c=%)
+all:$(exes)
+%:%.c
+	gcc $^ -o $@ -g -pthread
 clean:
-	$(RM) $(OBJS) test
+	$(RM) $(exes)
