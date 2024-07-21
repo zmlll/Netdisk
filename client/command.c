@@ -1,5 +1,6 @@
 #include "client.h"
 
+//命令行参数分割 
 void stringsplit(char* buf,parsing_t parsing,char split)
 {
     int flag = 0;
@@ -19,7 +20,9 @@ void stringsplit(char* buf,parsing_t parsing,char split)
 
 parsing_t* commandparsing(parsing_t* parsing,char* buf)
 {
+    //获取指令
     char* commandT = strtok(buf," ");
+    //获取参数
     char* argumentT= strtok(NULL," ");
     
     strncpy(parsing->command,commandT,strlen(commandT));
@@ -27,7 +30,7 @@ parsing_t* commandparsing(parsing_t* parsing,char* buf)
     {
         strncpy(parsing->argument,argumentT,strlen(argumentT));
     }
-
+    
     size_t len = strcspn(parsing->command,"\n"); //获取换行符的位置
     parsing->command[len] = '\0'; //将换行符替换为0
 
