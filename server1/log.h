@@ -1,0 +1,3 @@
+#define LOG_LOGIN(username, clientAddr){time_t now;time(&now);char time_str[26]; ctime_r(&now, time_str);syslog(LOG_INFO, "[登录时间:%s] [INFO-用户登录] [用户名:%s] [IP地址:%s] [端口:%d]\n", time_str, username, inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));}
+
+#define LOG_FUNC(username, command, argument){ time_t now;time(&now);char time_str[26];ctime_r(&now, time_str);syslog(LOG_INFO, "[操作时间;%s] [INFO-用户操作] [用户名:%s] [用户操作:%s %s]", time_str, username, command, argument);}
