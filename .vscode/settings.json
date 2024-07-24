@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "shadow.h": "c"
+        "shadow.h": "c",
+        "threadpool.h": "c"
     }
 }

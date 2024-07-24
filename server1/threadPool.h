@@ -2,7 +2,7 @@
 #define __THREAD_POOL__
 #include <func.h>
 #include "taskQueue.h"
-#include   <ctype.h>
+#include <ctype.h>
 #include <stdbool.h>
 #include "log.h"
 //主线程维持每一个子线程的信息
@@ -21,6 +21,9 @@ typedef struct threadPool_s
 
     //条件变量
     pthread_cond_t cond;
+
+    //退出标志 1退出
+    int exitflag;
 
 
 }threadPool_t;
