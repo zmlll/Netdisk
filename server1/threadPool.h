@@ -28,6 +28,27 @@ typedef struct threadPool_s
 
 }threadPool_t;
 
+enum cmd_t
+{
+    CD,
+    LS,
+    PUTS,
+    GETS,
+    REMOVE,
+    PWD,
+    MKDIR,
+    RMDIR,
+    INVALID
+};
+
+typedef struct train_s{
+    int length;
+    char data[1000];
+}train_t;
+
+struct sockaddr_in clientAddr;
+
+
 //线程池初始化
 int threadPoolInit(threadPool_t *pthreadPool,int threadNum);
 //创建子线程
@@ -40,6 +61,18 @@ int epollAdd(int epfd,int fd);
 int epollDel(int epfd,int fd);
 int transFile(int netfd);
 
+int handle_cd(int netfd, char *argument, char *cwd, int cwdsize);
+int handle_ls(int netfd,char* argument,char* cwd);
+int handle_puts(int netfd,char *arg);
+int handle_gets(int netfd,char *filename,char* cwd);
+int handle_remove(int netfd,char *arg);
+int handle_pwd(int netfd,char *arg);
+int handle_mkdir(int netfd,char *argument,char *cwd, int cwdsize);
+int handle_rmdir(int netfd,char *argument,char *cwd, int cwdsize);
+int handle_rm(int netfd,char* argument,char* cwd);
+int handle_pwd(int netfd,char *cwd);
+int uploadFile(int netfd, char* argument,char* cwd);
+int recvn(int netfd, void *buf, int length);
 
 
 #endif
