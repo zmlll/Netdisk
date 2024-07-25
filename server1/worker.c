@@ -369,6 +369,97 @@ confirm:
                    "------------------------------------------------------------\n"
                    "\nplease input your command: \n");
             send(netfd,registerOrLogin,sizeof(registerOrLogin),0);
+
+        while(1)
+        {
+            parsing_t parsing;
+
+            char command[10];
+            char argument[50];
+            memset(&parsing,0,sizeof(parsing));
+           // 取出netfd指向的文件对象中的接收缓冲区域的数据
+           // 便可以知道客户端向服务端的子线程发送了什么命令
+           int ret = recv(netfd,&parsing,sizeof(parsing_t),0);
+            if(ret == 0)
+            {
+                break;
+            }
+
+            strcpy(command,parsing.command);
+            strcpy(argument,parsing.argument);
+            LOG_FUNC(user_name,command,argument);
+
+            if(strncmp(CMD[8],command,strlen(CMD[8]))==0)
+            {
+                printf("exit\n");
+                break;
+            }
+            int cmdtoInt = -1;
+            for(int i = 0;i<8;i++)
+            {
+                if(strncmp(CMD[i],command,strlen(CMD[8]))==0)
+                {
+                    cmdtoInt = i;
+                    break;
+                }
+            }
+            if(cmdtoInt == -1)
+            {
+                cmdtoInt = 8;
+            }
+
+            int i = 0;
+            switch(cmdtoInt)
+            {
+                case CD:
+                    i = 0;
+                    send(netfd,&i,sizeof(int),0);
+                    handle_cd(netfd,argument,cwd,sizeof(cwd));
+                    break;
+                case LS:
+                    i = 1;
+                    send(netfd,&i,sizeof(int),0);
+                    handle_ls(netfd,argument,cwd);
+                    break;
+                case PUTS:
+                    i = 2;
+                    send(netfd,&i,sizeof(int),0);
+                    uploadFile(netfd,argument,cwd);
+                    break;
+                case GETS:
+                    i =3;
+                    send(netfd,&i,sizeof(int),0);
+                    handle_gets(netfd,argument,cwd);
+                    break;
+                case REMOVE:
+                    i = 4;
+                    send(netfd,&i,sizeof(int),0);
+                    handle_rm(netfd,argument,cwd);
+                    break;
+                case PWD:
+                    int i =5;
+                    send(netfd,&i,sizeof(int),0);
+                    handle_pwd(netfd,cwd);
+                case MKDIR:
+                    i = 6;
+                    send(netfd,&i,sizeof(int),0);
+                    handle_mkdir(netfd, argument,cwd,sizeof(cwd));
+                    break;
+                case RMDIR:
+                    i = 7;
+                    send(netfd,&i,sizeof(int),0);
+                    handle_mkdir(netfd,argument,cwd,0);
+                    break;
+                case INVALID:
+                    i = 8;
+                    send(netfd,&i,sizeof(int),0);
+                    break;
+                default:
+                    break;
+            }
+            printf("child thread finished task!\n");
+        }
+        close(netfd);
     }
 
 }
