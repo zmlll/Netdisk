@@ -55,7 +55,7 @@ int handle_cd(int netfd,char* argument,char* cwd,int cwdsize)
     enum cd_retval cdret;
     char dest[2048] = {0};
     int end = 0;  // 存储dest的长度，也是dest第一个'\0'的下标
-    //获取当前工作目录
+    //获取当前工作目录current work directory
     end = strlen(cwd);
     strncpy(dest,cwd,end);
     // 参数合法性判断与获取目标文件夹
