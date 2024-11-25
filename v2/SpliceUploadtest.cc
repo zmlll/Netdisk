@@ -134,10 +134,10 @@ void process(WFHttpTask *serverTask)
         // chunkcount键所对应的值-->下载的总进度
         // 前缀为chkidx_的键的数量-->下载的当前进度
         auto redisTask = WFTaskFactory::create_redis_task("redis://localhost",0,
-            [resp](WFRedisTask *redistask)
+            [resp](WFRedisTask *redisTask)
             {
                 protocol::RedisValue value;
-                redisTask->get_resp()->get_result();
+                redisTask->get_resp()->get_result(value);
                 int chunkcount;
                 int chunknow = 0;
                 for(int i =0;i<value.arr_size();i+=2)
